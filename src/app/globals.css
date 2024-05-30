@@ -1,76 +1,85 @@
+/* Importing Tailwind CSS base, components, and utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Apply box-sizing: border-box to all elements and their before/after pseudo-elements */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* Hide all scrollbars in WebKit browsers */
 *::-webkit-scrollbar {
   display: none !important;
 }
+
+/* Custom class for a radial gradient background */
 .bg-radial-gradient {
   background-image: radial-gradient(
-    circle at 10% 20%,
-    rgba(4, 159, 108, 1) 0%,
-    rgba(194, 254, 113, 1) 90.1%
+    circle at 10% 20%, /* Center of the gradient */
+    rgba(4, 159, 108, 1) 0%, /* Start color */
+    rgba(194, 254, 113, 1) 90.1% /* End color */
   );
 }
 
+/* Layer base: defining CSS variables for color themes */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
+    /* Light theme color variables */
+    --background: 0 0% 100%; /* white */
+    --foreground: 0 0% 3.9%; /* dark gray */
+    --card: 0 0% 100%; /* white */
+    --card-foreground: 0 0% 3.9%; /* dark gray */
+    --popover: 0 0% 100%; /* white */
+    --popover-foreground: 0 0% 3.9%; /* dark gray */
+    --primary: 0 0% 9%; /* very dark gray */
+    --primary-foreground: 0 0% 98%; /* very light gray */
+    --secondary: 0 0% 96.1%; /* very light gray */
+    --secondary-foreground: 0 0% 9%; /* very dark gray */
+    --muted: 0 0% 96.1%; /* very light gray */
+    --muted-foreground: 0 0% 45.1%; /* medium gray */
+    --accent: 0 0% 96.1%; /* very light gray */
+    --accent-foreground: 0 0% 9%; /* very dark gray */
+    --destructive: 0 84.2% 60.2%; /* red */
+    --destructive-foreground: 0 0% 98%; /* very light gray */
+    --border: 0 0% 89.8%; /* light gray */
+    --input: 0 0% 89.8%; /* light gray */
+    --ring: 0 0% 3.9%; /* dark gray */
+    --radius: 0.5rem; /* 8px border radius */
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    /* Dark theme color variables */
+    --background: 0 0% 3.9%; /* dark gray */
+    --foreground: 0 0% 98%; /* very light gray */
+    --card: 0 0% 3.9%; /* dark gray */
+    --card-foreground: 0 0% 98%; /* very light gray */
+    --popover: 0 0% 3.9%; /* dark gray */
+    --popover-foreground: 0 0% 98%; /* very light gray */
+    --primary: 0 0% 98%; /* very light gray */
+    --primary-foreground: 0 0% 9%; /* very dark gray */
+    --secondary: 0 0% 14.9%; /* medium dark gray */
+    --secondary-foreground: 0 0% 98%; /* very light gray */
+    --muted: 0 0% 14.9%; /* medium dark gray */
+    --muted-foreground: 0 0% 63.9%; /* light gray */
+    --accent: 0 0% 14.9%; /* medium dark gray */
+    --accent-foreground: 0 0% 98%; /* very light gray */
+    --destructive: 0 62.8% 30.6%; /* dark red */
+    --destructive-foreground: 0 0% 98%; /* very light gray */
+    --border: 0 0% 14.9%; /* medium dark gray */
+    --input: 0 0% 14.9%; /* medium dark gray */
+    --ring: 0 0% 83.1%; /* very light gray */
   }
 }
 
+/* Layer base: applying utility classes from Tailwind */
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border; /* Apply border color to all elements */
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground; /* Apply background and text color to body */
   }
 }
