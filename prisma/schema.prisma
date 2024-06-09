@@ -1,30 +1,48 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// This is your Prisma schema file.
+// Prisma is an ORM that simplifies database access and manipulation.
+// You can learn more about Prisma at https://pris.ly/d/prisma-schema
 
+// The generator block specifies which client library to generate.
+// In this case, we are using the Prisma Client for JavaScript/TypeScript.
 generator client {
   provider = "prisma-client-js"
 }
 
+// The datasource block specifies your database connection.
+// Here, we are using PostgreSQL and the connection URL is fetched from an environment variable.
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// The User model represents a user in the system.
 model User {
+  // Primary key field, auto-incremented integer.
   id Int @id @default(autoincrement())
 
+  // Unique identifier for the user from an external authentication provider (e.g., Clerk).
   clerkId      String  @unique
+  // Optional user name.
   name         String?
+  // Unique email address.
   email        String  @unique
+  // Optional profile image URL.
   profileImage String?
+  // User subscription tier, defaults to "Free".
   tier         String? @default("Free")
+  // Number of credits the user has, defaults to "10".
   credits      String? @default("10")
 
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  // Timestamp of when the user was created, automatically set to the current date and time.
+  createdAt    DateTime @default(now())
+  // Timestamp of the last update to the user record, automatically updated.
+  updatedAt    DateTime @updatedAt
+  // Optional unique identifier for the user's local Google account.
   localGoogleId    String?  @unique
+  // Optional unique resource ID for the user's Google account.
   googleResourceId String?  @unique
 
+  // Relations to other models (one-to-one or one-to-many).
   LocalGoogleCredential LocalGoogleCredential?
   DiscordWebhook        DiscordWebhook[]
   Notion                Notion[]
@@ -33,38 +51,60 @@ model User {
   workflows             Workflows[]
 }
 
+// Represents local Google account credentials.
 model LocalGoogleCredential {
+  // Primary key, unique UUID.
   id          String @id @default(uuid())
+  // Unique access token for the Google account.
   accessToken String @unique
 
+  // Optional Google Drive folder ID.
   folderId   String?
+  // Optional Google Drive page token for incremental sync.
   pageToken  String?
+  // Unique channel ID for Pub/Sub notifications.
   channelId  String  @unique @default(uuid())
+  // Subscription status to the channel, defaults to false.
   subscribed Boolean @default(false)
 
+  // Timestamps for creation and last update.
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Relation to the User model (one-to-one).
   userId Int  @unique
   user   User @relation(fields: [userId], references: [id])
 }
 
+// Represents a Discord webhook configuration.
 model DiscordWebhook {
+  // Primary key, unique UUID.
   id          String        @id @default(uuid())
+  // Unique webhook ID.
   webhookId   String        @unique
+  // Unique webhook URL.
   url         String        @unique
+  // Name of the webhook.
   name        String
+  // Name of the guild (server) where the webhook is used.
   guildName   String
+  // Unique guild (server) ID.
   guildId     String
+  // Unique channel ID where the webhook is used.
   channelId   String        @unique
+  // Relation to the User model.
   user        User          @relation(fields: [userId], references: [clerkId])
   userId      String
+  // Relation to the Connections model (one-to-many).
   connections Connections[]
 }
 
+// Represents a Slack configuration.
 model Slack {
+  // Primary key, unique UUID.
   id String @id @default(uuid())
 
+  // Various identifiers and tokens required for Slack integration.
   appId            String
   authedUserId     String
   authedUserToken  String @unique
@@ -73,26 +113,40 @@ model Slack {
   teamId           String
   teamName         String
 
+  // Relation to the User model.
   User        User          @relation(fields: [userId], references: [clerkId])
   userId      String
+  // Relation to the Connections model (one-to-many).
   connections Connections[]
 }
 
+// Represents a Notion configuration.
 model Notion {
+  // Primary key, unique UUID.
   id            String        @id @default(uuid())
+  // Unique access token for the Notion workspace.
   accessToken   String        @unique
+  // Unique identifier for the Notion workspace.
   workspaceId   String        @unique
+  // Unique identifier for the Notion database.
   databaseId    String        @unique
+  // Optional workspace name and icon.
   workspaceName String
   workspaceIcon String
+  // Relation to the User model.
   User          User          @relation(fields: [userId], references: [clerkId])
   userId        String
+  // Relation to the Connections model (one-to-many).
   connections   Connections[]
 }
 
+// Represents a connection between different services (Discord, Notion, Slack).
 model Connections {
+  // Primary key, unique UUID.
   id               String          @id @default(uuid())
+  // Unique type identifier for the connection.
   type             String          @unique
+  // Optional relations to DiscordWebhook, Notion, User, and Slack models.
   DiscordWebhook   DiscordWebhook? @relation(fields: [discordWebhookId], references: [id])
   discordWebhookId String?
   Notion           Notion?         @relation(fields: [notionId], references: [id])
@@ -103,22 +157,32 @@ model Connections {
   slackId          String?
 }
 
+// Represents a workflow configuration.
 model Workflows {
+  // Primary key, unique UUID.
   id                String   @id @default(uuid())
+  // JSON strings representing nodes and edges in the workflow.
   nodes             String?
   edges             String?
+  // Name and description of the workflow.
   name              String
+  description       String
+  // Optional templates for Discord, Notion, and Slack.
   discordTemplate   String?
   notionTemplate    String?
   slackTemplate     String?
+  // List of Slack channels involved in the workflow.
   slackChannels     String[]
+  // Optional access tokens and IDs for Slack and Notion.
   slackAccessToken  String?
   notionAccessToken String?
   notionDbId        String?
+  // File paths for workflow and cron job execution.
   flowPath          String?
   cronPath          String?
+  // Publish status, defaults to false.
   publish           Boolean? @default(false)
-  description       String
+  // Relation to the User model.
   User              User     @relation(fields: [userId], references: [clerkId])
   userId            String
 }
