@@ -186,7 +186,7 @@ export const ProductCard = ({
         y: -20, // Move up on hover
       }}
       key={product.title}
-      className="group/product h-96 w-[30rem] relative flex-shrink-0"
+      className="group/product h-32 w-56 md:h-96 md:w-96  relative flex-shrink-0"
     >
       <Link
         href={product.link}
